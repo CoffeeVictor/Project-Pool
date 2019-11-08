@@ -5,7 +5,7 @@ urls = (
     '/robot', 'Robot'
 )
 
-myPool = PM.Pool()
+myPool = PM.Pool(width = 360, height = 640)
 myRobot = PM.Robo()
 
 class MyApplication(web.application):
@@ -17,7 +17,7 @@ class MyApplication(web.application):
 class Robot:
     def GET(self):
         global myRobot
-        myRobot.update()
+        myRobot.update(myPool)
         web.header('Content-Type', 'application/json')
         return myRobot.report(myPool)
 

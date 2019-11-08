@@ -1,47 +1,54 @@
-from random import random, uniform
+from random import random, uniform, randint
 from math import floor
 from json import dumps
 
 
 class Pool:
-    def __init__(self):
+    def __init__(self, width, height):
         self.n_linhas = 10
         self.n_cols = 10
-        self.tile_l = 100/self.n_cols
-        self.tile_a = 100/self.n_linhas
+        self.width = width
+        self.height = height
+        self.tile_l = width/self.n_cols
+        self.tile_a = height/self.n_linhas
         self.tiles = [[random() for _ in range(self.n_cols)] for a in range(self.n_linhas)]
 
 class Robo:
     def __init__(self):
         self.x = 0
         self.y = 0
-        self.spd = 0.4
+        self.tx = 0
+        self.ty = 0
+        self.spd = 4
         self.tgX = 0
         self.tgY = 0
 
-    def update(self):
-        if self.x == self.tgX and self.y == self.tgY:
-            self.tgX = uniform(0, 100)
-            self.tgY = uniform(0, 100)
+    def update(self, Pool):
+        if self.tx == self.tgX and self.ty == self.tgY:
+            self.tgX = randint(0, Pool.n_cols)
+            self.tgY = uniform(0, Pool.n_linhas)
 
-        if self.x < self.tgX:
+        if self.tx < self.tgX:
             self.x += self.spd
-        if self.x > self.tgX:
+        if self.tx > self.tgX:
             self.x -= self.spd
-        if self.y < self.tgY:
+        if self.ty < self.tgY:
             self.y += self.spd
-        if self.y > self.tgY:
+        if self.ty > self.tgY:
             self.y -= self.spd
+
+        self.tx = floor(self.x/Pool.tile_l)
+        self.ty = floor(self.y/Pool.tile_a)
 
     def report(self, Pool):
         searchX = floor(self.x/Pool.tile_l)
         searchY = floor(self.y/Pool.tile_a)
         oxReport = Pool.tiles[searchX][searchY]
         retDict = {
-            'robo.x':self.x,
-            'robo.y':self.y,
-            'tile.x':searchX,
-            'tile.y':searchY,
+            'robo_x':self.x,
+            'robo_y':self.y,
+            'tile_x':searchX,
+            'tile_y':searchY,
             'oxLevel':oxReport,
         }
         return dumps(retDict, indent=4)
