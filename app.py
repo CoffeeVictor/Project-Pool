@@ -1,8 +1,10 @@
 import web
 import Pool_module as PM
+from json import loads
 
 urls = (
-    '/robot', 'Robot'
+    '/robot', 'Robot',
+    '/receber', 'Receive'
 )
 
 myPool = PM.Pool(width = 360, height = 640)
@@ -21,6 +23,17 @@ class Robot:
         web.header('Content-Type', 'application/json')
         return myRobot.report(myPool)
 
+class Receive:
+    def POST(self):
+        response_json = web.data()
+        print(response_json)
+        print(str(response_json))
+        text = response_json.decode("utf-8")
+        print(text)
+        print(type(text))
+        '''data = loads(text)
+        value = data["name"]
+        return 'Hello ' + value'''
 
 if __name__ == '__main__':
     app = MyApplication(urls, globals())

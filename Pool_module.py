@@ -12,6 +12,8 @@ class Pool:
         self.tile_l = width/self.n_cols
         self.tile_a = height/self.n_linhas
         self.tiles = [[random() for _ in range(self.n_cols)] for a in range(self.n_linhas)]
+    def refresh(self):
+        self.tiles = [[random() for _ in range(self.n_cols)] for a in range(self.n_linhas)]
 
 class Robo:
     def __init__(self):
@@ -24,9 +26,13 @@ class Robo:
         self.tgY = 0
 
     def update(self, Pool):
+        self.tx = floor(self.x/Pool.tile_l)
+        self.ty = floor(self.y/Pool.tile_a)
+
         if self.tx == self.tgX and self.ty == self.tgY:
             self.tgX = randint(0, Pool.n_cols)
-            self.tgY = uniform(0, Pool.n_linhas)
+            self.tgY = randint(0, Pool.n_linhas)
+            print('New targets: ', self.tgX, self.tgY)
 
         if self.tx < self.tgX:
             self.x += self.spd
@@ -36,9 +42,6 @@ class Robo:
             self.y += self.spd
         if self.ty > self.tgY:
             self.y -= self.spd
-
-        self.tx = floor(self.x/Pool.tile_l)
-        self.ty = floor(self.y/Pool.tile_a)
 
     def report(self, Pool):
         searchX = floor(self.x/Pool.tile_l)
