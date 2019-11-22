@@ -44,8 +44,8 @@ class Robo:
             self.y -= self.spd
 
     def report(self, Pool):
-        searchX = floor(self.x/Pool.tile_l)
-        searchY = floor(self.y/Pool.tile_a)
+        searchX = int(floor(self.x/Pool.tile_l))
+        searchY = int(floor(self.y/Pool.tile_a))
         oxReport = Pool.tiles[searchX][searchY]
         retDict = {
             'robo_x':self.x,

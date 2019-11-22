@@ -1,6 +1,6 @@
 import web
 import Pool_module as PM
-from json import loads
+from json import loads, dumps
 
 urls = (
     '/robot', 'Robot',
@@ -25,13 +25,22 @@ class Robot:
 
 class Receive:
     def POST(self):
-        response_json = web.data()
+        response_json = loads(web.data())
+
         print(response_json)
+        print(type(response_json))
+
+        response = {'msg' : str(response_json['msg'])}
+
+        return dumps(response)
+        
+        '''print(response_json)
         print(str(response_json))
         text = response_json.decode("utf-8")
         print(text)
         print(type(text))
-        '''data = loads(text)
+        return 'Funcionou'
+        data = loads(text)
         value = data["name"]
         return 'Hello ' + value'''
 
